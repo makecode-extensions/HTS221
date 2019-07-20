@@ -1,0 +1,18 @@
+{
+    "name": "HTS221",
+    "version": "1.0.0",
+    "description": "ST HTS221 Humidity and temperature Sensor I2C extension for makecode.",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "README.md",
+        "_locales/zh/HTS221-strings.json",
+        "HTS221.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true
+}

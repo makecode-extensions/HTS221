@@ -1,6 +1,7 @@
 {
     "HTS221.POWER_ONOFF.ON|block": "开",
     "HTS221.POWER_ONOFF.OFF|block": "关",
+    "HTS221.init|block": "初始化",
     "HTS221.oneshot_mode|block": "oneshot 模式 %oneshot",
     "HTS221.humidity|block": "湿度",
     "HTS221.temperature|block": "温度 %u",

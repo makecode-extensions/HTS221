@@ -152,7 +152,7 @@ namespace HTS221 {
      * set power on/off
      */
     //% block="power %on"
-    export function power(on: POWER_ONOFF = POWER_ONOFF.ON) {
+    export function power(on: HTS221.POWER_ONOFF = HTS221.POWER_ONOFF.ON) {
         let t = (on) ? 0x80 : 0
         setreg_mask(0x20, t, 0x7F)
     }

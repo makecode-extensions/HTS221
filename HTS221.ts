@@ -24,28 +24,19 @@ namespace HTS221 {
     }
 
     const HTS221_I2C_Addr = 0x5F
-
-    // HTS221 Temp Calibration registers
-    let T0_OUT = getInt16LE(0x3C)
-    let T1_OUT = getInt16LE(0x3E)
-    let t = getUInt8LE(0x35) % 16
-    let T0_degC = getUInt8LE(0x32) / 8 + (t % 4) * 32
-    let T1_degC = getUInt8LE(0x33) / 8 + (t / 4) * 32
-    // HTS221 Humi Calibration registers
-    let H0_OUT = getInt16LE(0x36)
-    let H1_OUT = getInt16LE(0x3A)
-    let H0_rH = getUInt8LE(0x30) / 2
-    let H1_rH = getUInt8LE(0x31) / 2
-    // Coefficient
-    let KT = (T1_degC - T0_degC) / (T1_OUT - T0_OUT)
-    let KH = (H1_rH - H0_rH) / (H1_OUT - H0_OUT)
-    // set av conf: T = 32 H= 256
-    setreg(0x10, 0x26)
-    // set CTRL_REG1: PD = 1 BDU= 1 ODR= 1
-    setreg(0x20, 0x85)
-
     let _oneshot = false
-    oneshot_mode(false)
+    let T0_OUT = 0
+    let T1_OUT = 0
+    let T0_degC = 0
+    let T1_degC = 0
+    let H0_OUT = 0
+    let H1_OUT = 0
+    let H0_rH = 0
+    let H1_rH = 0
+    let KT = 0
+    let KH = 0
+
+    init()
 
     // set dat to reg
     function setreg(reg: number, dat: number): void {
@@ -88,6 +79,32 @@ namespace HTS221 {
     function bitround(x: number, b: number = 1): number {
         let n = 10 ** b
         return Math.round(x * n) / n
+    }
+
+    /**
+     * Init sensor
+     */
+    //% block="Initialize"
+    export function init() {
+        // HTS221 Temp Calibration registers
+        T0_OUT = getInt16LE(0x3C)
+        T1_OUT = getInt16LE(0x3E)
+        let t = getUInt8LE(0x35) % 16
+        T0_degC = getUInt8LE(0x32) / 8 + (t % 4) * 32
+        T1_degC = getUInt8LE(0x33) / 8 + (t / 4) * 32
+        // HTS221 Humi Calibration registers
+        H0_OUT = getInt16LE(0x36)
+        H1_OUT = getInt16LE(0x3A)
+        H0_rH = getUInt8LE(0x30) / 2
+        H1_rH = getUInt8LE(0x31) / 2
+        // Coefficient
+        KT = (T1_degC - T0_degC) / (T1_OUT - T0_OUT)
+        KH = (H1_rH - H0_rH) / (H1_OUT - H0_OUT)
+        // set av conf: T = 32 H= 256
+        setreg(0x10, 0x26)
+        // set CTRL_REG1: PD = 1 BDU= 1 ODR= 1
+        setreg(0x20, 0x85)
+        oneshot_mode(false)
     }
 
     // oneshot mode handle

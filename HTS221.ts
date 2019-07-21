@@ -149,6 +149,14 @@ namespace HTS221 {
     }
 
     /**
+     * Calculate Dewpoint
+     */
+    //% block="Dewpoint"
+    export function dewpoint(): number {
+        return Math.round(temperature() - (100 - humidity()) / 5)
+    }
+
+    /**
      * set power on/off
      */
     //% block="power %on"
